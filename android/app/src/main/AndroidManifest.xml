@@ -5,6 +5,8 @@
         android:label="hackkorea2022"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyD8sDXMWhj0n5pwvTzTHGcrSN6Rq_SECKE"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
