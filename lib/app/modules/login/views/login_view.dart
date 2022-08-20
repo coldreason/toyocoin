@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'package:get/get.dart';
 
@@ -8,13 +9,14 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('LoginView'),
-        centerTitle: true,
-      ),
       body: Center(
-        child: TextButton(
-          onPressed: (){controller.signIn();},child: Text('대충 구글 로그인 버튼'),
+        child: Container(
+          height: 60,
+          child: SignInButton(
+            Buttons.Google,
+            text: "Sign up with Google",
+            onPressed: controller.signIn,
+          ),
         )
       ),
     );

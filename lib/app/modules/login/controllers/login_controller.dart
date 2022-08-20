@@ -29,6 +29,7 @@ class LoginController extends GetxController {
       // error on sign in
       return null;
     }
+    print(repository.checkNewUser(ret.user!.uid)==true?'newUser':'no');
     Get.toNamed('/home');
   }
 }

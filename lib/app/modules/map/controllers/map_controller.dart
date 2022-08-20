@@ -61,13 +61,15 @@ class MapController extends GetxController {
 
 
 
-  String getMarkerId(LatLng posi) =>
+  String _getMarkerId(LatLng posi) =>
       (posi.latitude.toString() + posi.longitude.toString());
 
-  String getPolyId(LatLng posi1, LatLng posi2) =>
-      (getMarkerId(posi1) + getMarkerId(posi2));
+  String _getPolyId(LatLng posi1, LatLng posi2) =>
+      (_getMarkerId(posi1) + _getMarkerId(posi2));
 
   selectMarker(String targetMarkerId) async {
+
+
     Marker targetNode = avalableNode.value
         .singleWhere((element) => element.markerId.value == targetMarkerId);
     avalableNode.value.remove(targetNode);
@@ -77,7 +79,6 @@ class MapController extends GetxController {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         //todo: change to selectable marker
         onTap: () {},
-        //todo : add marker to page
         position: targetNode.position));
     selectedNode.add(targetNode.position);
 
@@ -86,7 +87,7 @@ class MapController extends GetxController {
 
     List<Polyline> polylineList = [];
     toSelectedLine!.forEach((element) => polylineList.add(Polyline(
-        polylineId: PolylineId(getPolyId(targetNode.position, element)),
+        polylineId: PolylineId(_getPolyId(targetNode.position, element)),
         visible: true,
         points: [targetNode.position, element],
         width: 6,
@@ -95,7 +96,7 @@ class MapController extends GetxController {
         endCap: Cap.buttCap)));
     if (selectedNode.length > 1) {//avoid initial trying
       toSelectedNode.add(Polyline(
-          polylineId: PolylineId(getPolyId(
+          polylineId: PolylineId(_getPolyId(
               selectedNode[selectedNode.length - 2],
               selectedNode[selectedNode.length - 1])),
           visible: true,
