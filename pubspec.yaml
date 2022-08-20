@@ -13,7 +13,8 @@ dependencies:
   firebase_auth: 3.6.4
   cloud_firestore: 3.4.5
   google_maps_flutter: 2.1.12
-  flutter: 
+  google_map_polyline_new: 0.3.0+2
+  flutter:
     sdk: flutter
 
 dev_dependencies: 
