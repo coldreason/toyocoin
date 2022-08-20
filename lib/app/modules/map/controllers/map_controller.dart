@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hackkorea2022/app/data/repositories/map_repository.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class MapController extends GetxController {
   //TODO: Implement MapController
@@ -16,6 +17,10 @@ class MapController extends GetxController {
 
   RxList<Polyline> toAllNode = <Polyline>[].obs;
   List<Polyline> toSelectedNode = <Polyline>[];
+
+  List<List<DateTime>> dateList = [];
+  late DateTime startDate;
+  late int diff;
 
   Rx<CameraPosition> cameraCenter = CameraPosition(
     target: LatLng(40.679, -73.942),
@@ -54,6 +59,8 @@ class MapController extends GetxController {
   @override
   void onClose() {}
 
+
+
   String getMarkerId(LatLng posi) =>
       (posi.latitude.toString() + posi.longitude.toString());
 
@@ -86,7 +93,7 @@ class MapController extends GetxController {
         color: Colors.blue,
         startCap: Cap.roundCap,
         endCap: Cap.buttCap)));
-    if (selectedNode.length > 1) {
+    if (selectedNode.length > 1) {//avoid initial trying
       toSelectedNode.add(Polyline(
           polylineId: PolylineId(getPolyId(
               selectedNode[selectedNode.length - 2],
@@ -107,5 +114,37 @@ class MapController extends GetxController {
     //get recommended node
 
     update();
+    await Get.dialog(
+      AlertDialog(
+        content: Container(
+          height: 300,
+          width: 200,
+          child: SfDateRangePicker(
+            onSelectionChanged: _onSelectionChanged,
+                        selectionMode: DateRangePickerSelectionMode.range,
+                      ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text("Save"),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
+    List<DateTime> date = [];
+    for(int i = 0;i<diff+1;i++){
+      date.add(startDate.add(Duration(days: i)));
+    }
+    dateList.add(date);
+  }
+
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    if (args.value is PickerDateRange) {
+      var start = args.value.startDate as DateTime;
+      var end = (args.value.endDate ?? args.value.startDate) as DateTime;
+      startDate = start;
+      diff = end.difference(start).inDays;
+    }
   }
 }
