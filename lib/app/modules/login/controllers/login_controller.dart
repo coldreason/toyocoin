@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:hackkorea2022/app/data/models/user_model.dart';
 import 'package:hackkorea2022/app/data/repositories/login_repositiory.dart';
 
 class LoginController extends GetxController {
@@ -29,7 +30,11 @@ class LoginController extends GetxController {
       // error on sign in
       return null;
     }
-    print(repository.checkNewUser(ret.user!.uid)==true?'newUser':'no');
-    Get.toNamed('/home');
+    UserProgressModel userModel = await repository.check(ret.user!.uid);
+    print(userModel.isRoutePresent.toString());
+    print(userModel.isProfilePresent.toString());
+    if(userModel.isRoutePresent)Get.toNamed('/map',arguments: {'finished':false});
+    if(userModel.isProfilePresent)Get.toNamed('/departure',arguments: {"initial":false});
+    Get.toNamed('/departure',arguments: {"initial":true});
   }
 }
